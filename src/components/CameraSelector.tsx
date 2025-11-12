@@ -1,9 +1,9 @@
 
 type Props = {
-  cameras: string[];
-  selected: string;
-  onSelect: (cam: string) => void;
-};
+  cameras: string[]
+  selected: string
+  onSelect: (cam: string) => void
+}
 
 export default function CameraSelector({ cameras, selected, onSelect }: Props) {
   return (
@@ -12,12 +12,12 @@ export default function CameraSelector({ cameras, selected, onSelect }: Props) {
         <button
           key={cam}
           onClick={() => onSelect(cam)}
-          className={`camera-btn ${selected === cam ? "active" : ""}`}
+          className={`camera-btn ${selected === cam ? 'active' : ''}`}
           aria-pressed={selected === cam}
         >
           {cam.toUpperCase()}
         </button>
       ))}
     </div>
-  );
+  )
 }

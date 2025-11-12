@@ -1,24 +1,24 @@
-import { useState, useEffect } from "react";
-import { getParkingStatus } from "../api/parkingApi";
-import ParkingSpotGrid from "../components/ParkingSpotGrid";
-import CameraSelector from "../components/CameraSelector";
-import type { ParkingSpot } from "../types";
+import { useState, useEffect } from 'react'
+import { getParkingStatus } from '../api/parkingApi'
+import ParkingSpotGrid from '../components/ParkingSpotGrid'
+import CameraSelector from '../components/CameraSelector'
+import type { ParkingSpot } from '../types'
 
-const CAMERA_LIST = ["cam1", "cam2", "cam3"];
+const CAMERA_LIST = ['cam1', 'cam2', 'cam3']
 
 export default function CamerasView() {
-  const [camera, setCamera] = useState<string>(CAMERA_LIST[0]);
-  const [spots, setSpots] = useState<ParkingSpot[]>([]);
+  const [camera, setCamera] = useState<string>(CAMERA_LIST[0])
+  const [spots, setSpots] = useState<ParkingSpot[]>([])
 
   useEffect(() => {
-    let mounted = true;
-    getParkingStatus(camera).then((data) => {
-      if (mounted) setSpots(data);
-    });
+    let mounted = true
+    getParkingStatus(camera).then(data => {
+      if (mounted) setSpots(data)
+    })
     return () => {
-      mounted = false;
-    };
-  }, [camera]);
+      mounted = false
+    }
+  }, [camera])
 
   return (
     <div className="app-container">
@@ -36,5 +36,5 @@ export default function CamerasView() {
         <ParkingSpotGrid spots={spots} onToggle={() => {}} />
       </div>
     </div>
-  );
+  )
 }

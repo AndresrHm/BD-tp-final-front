@@ -1,14 +1,14 @@
 type ParkingSpot = {
-  id: number;
-  ocupado: boolean;
-  label?: string;
+  id: number
+  ocupado: boolean
+  label?: string
 };
-import ParkingSpotButton from "./ParkingSpotButton";
+import ParkingSpotButton from './ParkingSpotButton'
 
 type Props = {
   spots: ParkingSpot[];
-  onToggle: (id: number) => void;
-  columns?: number;
+  onToggle: (id: number) => void
+  columns?: number
 };
 
 export default function ParkingSpotGrid({ spots, onToggle, columns: _columns = 4 }: Props) {
@@ -18,5 +18,5 @@ export default function ParkingSpotGrid({ spots, onToggle, columns: _columns = 4
         <ParkingSpotButton key={s.id} spot={s} onToggle={onToggle} />
       ))}
     </div>
-  );
+  )
 }

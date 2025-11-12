@@ -1,24 +1,24 @@
-import { useEffect, useState } from "react";
-import MetricsChart from "../components/MetricsChart";
-import { getMetrics } from "../api/parkingApi";
-import type { MetricPoint } from "../types";
+import { useEffect, useState } from 'react'
+import MetricsChart from '../components/MetricsChart'
+import { getMetrics } from '../api/parkingApi'
+import type { MetricPoint } from '../types'
 
 export default function MetricsView() {
-  const [data, setData] = useState<MetricPoint[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [data, setData] = useState<MetricPoint[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    let mounted = true;
-    getMetrics().then((d) => {
+    let mounted = true
+    getMetrics().then(d => {
       if (mounted) {
-        setData(d as any);
-        setLoading(false);
+        setData(d)
+        setLoading(false)
       }
-    });
+    })
     return () => {
-      mounted = false;
-    };
-  }, []);
+      mounted = false
+    }
+  }, [])
 
   return (
     <div className="app-container">
@@ -30,9 +30,15 @@ export default function MetricsView() {
       </div>
 
       <div className="card">
-        {loading ? <div>Cargando métricas...</div> : <div className="metrics-figure"><MetricsChart data={data as any} /></div>}
+        {loading ? (
+          <div>Cargando métricas...</div>
+        ) : (
+          <div className="metrics-figure">
+            <MetricsChart data={data} />
+          </div>
+        )}
         <div className="foot-note">Los datos son ficticios para propósitos de desarrollo.</div>
       </div>
     </div>
-  );
+  )
 }

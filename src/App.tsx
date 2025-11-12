@@ -1,6 +1,6 @@
-import { BrowserRouter, Routes, Route, NavLink } from "react-router-dom";
-import CamerasView from "./pages/CamerasView";
-import MetricsView from "./pages/MetricsView";
+import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
+import CamerasView from './pages/CamerasView'
+import MetricsView from './pages/MetricsView'
 
 export default function App() {
   return (
@@ -33,5 +33,5 @@ export default function App() {
         </main>
       </div>
     </BrowserRouter>
-  );
+  )
 }
