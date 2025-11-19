@@ -24,14 +24,11 @@ export interface VisualizerGridProps {
   mode: 'grid' | 'rows' | 'street';
 }
 
-//  * COMPONENTE: Botón con Estilos Tailwind
 const ParkingSpotButton = ({ spot, onToggle }: ParkingSpotButtonProps) => {
   const isOccupied = spot.ocupado;
 
-  // Clases base para la tarjeta
   const baseClasses = "relative flex flex-col items-center justify-center p-4 rounded-xl transition-all duration-200 border-2 shadow-sm hover:shadow-md hover:-translate-y-1 cursor-pointer min-h-[110px] w-full group";
 
-  // Clases según estado (Rojo vs Verde)
   const statusClasses = isOccupied
     ? "bg-red-50 border-red-200 text-red-700 hover:bg-red-100 hover:border-red-300"
     : "bg-emerald-50 border-emerald-200 text-emerald-700 hover:bg-emerald-100 hover:border-emerald-300";
@@ -41,7 +38,6 @@ const ParkingSpotButton = ({ spot, onToggle }: ParkingSpotButtonProps) => {
       onClick={() => onToggle && onToggle(spot.id)}
       className={`${baseClasses} ${statusClasses}`}
     >
-      {/* Icono animado */}
       <div className="text-3xl mb-2 transform group-hover:scale-110 transition-transform duration-200">
         {isOccupied ? '🚗' : '✅'}
       </div>
@@ -49,7 +45,7 @@ const ParkingSpotButton = ({ spot, onToggle }: ParkingSpotButtonProps) => {
       <span className="font-extrabold text-lg tracking-tight">{spot.label}</span>
 
       <span className={`text-xs font-bold uppercase tracking-widest mt-1 px-2 py-0.5 rounded-full ${isOccupied ? 'bg-red-200/50' : 'bg-emerald-200/50'}`}>
-        {isOccupied ? 'Ocupado' : 'Libre'}
+        {isOccupied ? 'Ocup' : 'Libre'}
       </span>
     </div>
   );
@@ -91,7 +87,6 @@ export default function ParkingLiveView({ cameraName }: ParkingLiveViewProps) {
 
   return (
     <div className="">
-      {/* Header Moderno */}
       <div className="flex flex-col md:flex-row justify-between items-center mb-8 gap-4 bg-white/80 backdrop-blur-md p-5 rounded-2xl shadow-sm border border-slate-200 sticky top-4 z-10">
         <div className="flex items-center gap-3">
           <div className="relative">
@@ -120,7 +115,6 @@ export default function ParkingLiveView({ cameraName }: ParkingLiveViewProps) {
         </div>
       </div>
 
-      {/* Alertas */}
       {error && (
         <div className="bg-amber-50 border-l-4 border-amber-400 p-4 mb-8 rounded-r-lg flex items-center gap-3 shadow-sm">
           <span className="text-amber-500 text-xl">⚠️</span>
@@ -128,7 +122,6 @@ export default function ParkingLiveView({ cameraName }: ParkingLiveViewProps) {
         </div>
       )}
 
-      {/* Visualizador */}
       {!loading && (
         <VisualizerGrid spots={spots} mode={viewMode} />
       )}
@@ -136,12 +129,8 @@ export default function ParkingLiveView({ cameraName }: ParkingLiveViewProps) {
   );
 }
 
-/**
- * LAYOUTS (Estilizados con Tailwind)
- */
 function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
 
-  // 1. GRID
   if (mode === 'grid') {
     return (
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
@@ -153,7 +142,6 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
   }
 
 
-  // 2. ROWS
   if (mode === 'rows') {
     const rows = spots.reduce((acc, spot) => {
       const r = spot.row || 1;
@@ -162,7 +150,7 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
       return acc;
     }, {});
     const sortedRows = Object.keys(rows).sort((a, b) => Number(a) - Number(b));
-    
+
     return (
       <div className="space-y-6">
         {sortedRows.map(rowNum => (
@@ -184,11 +172,6 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
     );
   }
 
-  /**
-   * LÓGICA VISUAL ACTUALIZADA
-   */
-
-  // Agrupar por filas
   const rows = spots.reduce((acc, spot) => {
     const r = spot.row || 1;
     if (!acc[r]) acc[r] = [];
@@ -196,62 +179,47 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
     return acc;
   }, {});
 
-  // Ordenar filas numéricamente
   const sortedRows = Object.keys(rows).sort((a, b) => Number(a) - Number(b));
 
-  // MODO STREET / PASILLO REFACTORIZADO
   if (mode === 'street') {
-    // 1. Crear Pares: [[1,2], [3,4], ...]
     const rowPairs = [];
     for (let i = 0; i < sortedRows.length; i += 2) {
-      const bottomRow = sortedRows[i];     // Ej: Fila 1
-      const topRow = sortedRows[i + 1];    // Ej: Fila 2 (si existe)
+      const bottomRow = sortedRows[i];
+      const topRow = sortedRows[i + 1];
       rowPairs.push({ bottom: bottomRow, top: topRow });
     }
 
     return (
-      <div className="bg-slate-800 p-6 rounded-xl shadow-2xl border-4 border-slate-700 w-full min-h-[600px] flex flex-col justify-end relative overflow-hidden">
+      <div className="bg-slate-800 p-6 rounded-xl shadow-2xl border-4 border-slate-700 w-full min-h-[600px] flex flex-col justify-end relative">
 
-        {/* Fondo decorativo de asfalto */}
         <div className="absolute inset-0 opacity-10 bg-[radial-gradient(#fff_1px,transparent_1px)] [background-size:16px_16px]"></div>
 
-        {/* CONTENEDOR PRINCIPAL
-            flex-col-reverse: Hace que el primer par (Fila 1-2) se renderice ABAJO 
-            y los siguientes ARRIBA. Cumpliendo "de abajo hacia arriba".
-            gap-24: Es el PASILLO (calle ancha) entre bloques de filas.
-        */}
         <div className="flex flex-col-reverse gap-24 relative z-10 w-full h-full justify-start overflow-y-auto">
 
           {rowPairs.map((pair, idx) => (
             <div key={idx} className="relative w-full">
 
-              {/* BLOQUE DE PARES (Ej: Fila 2 arriba, Fila 1 abajo) */}
-              <div className="flex flex-col w-full bg-slate-900/50 rounded-lg border border-slate-600/30 p-2">
+              <div className="flex flex-col bg-slate-900/50 rounded-lg border border-slate-600/30 p-2">
 
-                {/* FILA SUPERIOR DEL PAR (Ej: Fila 2) */}
-                {/* Se renderiza primero visualmente dentro del bloque */}
                 {pair.top && (
-                  <div className="flex justify-center gap-2 w-full mb-1">
+                  <div className="flex justify-start gap-3 w-full mb-1">
                     {rows[pair.top].map(spot => (
-                      <div key={spot.id} className="flex-1 min-w-0"> {/* flex-1 hace el "zoom automático" */}
+                      <div key={spot.id} className="w-32">
                         <ParkingSpotButton spot={spot} />
                       </div>
                     ))}
                   </div>
                 )}
 
-                {/* LÍNEA DIVISORIA FINA (Espalda con espalda) */}
                 {pair.top && pair.bottom && (
                   <div className="h-0 border-t-2 border-dashed border-slate-500 w-full my-1 opacity-50 relative">
-                    {/* Etiqueta pequeña de separación */}
                     <span className="absolute right-0 -top-2 text-[10px] text-slate-500 bg-slate-800 px-1">Muro</span>
                   </div>
                 )}
 
-                {/* FILA INFERIOR DEL PAR (Ej: Fila 1) */}
-                <div className="flex justify-center gap-2 w-full mt-1">
+                <div className="flex justify-start gap-3 w-full mt-1">
                   {rows[pair.bottom].map(spot => (
-                    <div key={spot.id} className="flex-1 min-w-0">
+                    <div key={spot.id} className="w-32">
                       <ParkingSpotButton spot={spot} />
                     </div>
                   ))}
@@ -259,8 +227,6 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
 
               </div>
 
-              {/* DECORACIÓN DE PASILLO (Solo visual, aparece 'encima' del gap) */}
-              {/* Esta etiqueta flota en el espacio creado por el gap-24 del padre */}
               <div className="absolute -top-16 left-0 w-full flex items-center justify-center pointer-events-none">
                 <div className="h-8 w-full border-x border-yellow-500/20 flex items-center justify-center">
                   <span className="text-yellow-500/40 font-bold tracking-[1em] text-xs uppercase">Pasillo de Circulación</span>
@@ -272,7 +238,6 @@ function VisualizerGrid({ spots, mode }: VisualizerGridProps) {
 
         </div>
 
-        {/* Entrada (Decoración visual abajo del todo) */}
         <div className="absolute bottom-0 left-0 right-0 h-4 bg-gradient-to-t from-black/40 to-transparent pointer-events-none"></div>
       </div>
     );
