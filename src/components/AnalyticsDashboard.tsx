@@ -23,31 +23,6 @@ const apiService = {
     getLeastBusyHour: async () => (await fetchAPI('/least_busy_hour')).hour
 };
 
-// Iconos SVG
-const Icons = {
-    Percent: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>,
-    TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>,
-    TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>,
-    MapPin: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>,
-    AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>,
-    Activity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-};
-
-const StatCard = ({ title, value, icon: Icon, colorClass, bgClass, loading }) => (
-    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
-        <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${bgClass} ${colorClass}`}>
-            <Icon />
-        </div>
-        <div className="flex-1">
-            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">{title}</p>
-            {loading ? (
-                <div className="h-8 w-24 bg-slate-100 rounded animate-pulse"></div>
-            ) : (
-                <h3 className="text-2xl font-extrabold text-slate-800">{value !== null && value !== undefined ? value : 'N/A'}</h3>
-            )}
-        </div>
-    </div>
-);
 
 export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
     const [metrics, setMetrics] = useState({
@@ -98,16 +73,43 @@ export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
     );
 }
 
+
+// Iconos SVG
+const Icons = {
+    Percent: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="19" y1="5" x2="5" y2="19"></line><circle cx="6.5" cy="6.5" r="2.5"></circle><circle cx="17.5" cy="17.5" r="2.5"></circle></svg>,
+    TrendingUp: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg>,
+    TrendingDown: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"></polyline><polyline points="17 18 23 18 23 12"></polyline></svg>,
+    MapPin: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>,
+    AlertTriangle: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>,
+    Activity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+};
+
+const StatCard = ({ title, value, icon: Icon, colorClass, bgClass, loading }) => (
+    <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
+        <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${bgClass} ${colorClass}`}>
+            <Icon />
+        </div>
+        <div className="flex-1">
+            <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-1">{title}</p>
+            {loading ? (
+                <div className="h-8 w-24 bg-slate-100 rounded animate-pulse"></div>
+            ) : (
+                <h3 className="text-2xl font-extrabold text-slate-800">{value !== null && value !== undefined ? value : 'N/A'}</h3>
+            )}
+        </div>
+    </div>
+);
+
 const styles = {
-  title: {
-    fontSize: '1.8rem',
-    fontWeight: '700',
-    margin: '0',
-    color: '#1a1a1a',
-  },
-  subtitle: {
-    margin: '0 0 0 0',
-    color: '#666',
-    fontSize: '0.9rem',
-  },
+    title: {
+        fontSize: '1.8rem',
+        fontWeight: '700',
+        margin: '0',
+        color: '#1a1a1a',
+    },
+    subtitle: {
+        margin: '0 0 0 0',
+        color: '#666',
+        fontSize: '0.9rem',
+    },
 }

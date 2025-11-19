@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 import ParkingSpotGrid from '../components/ParkingSpotGrid'
 import CameraSelector from '../components/CameraSelector'
 import AnalyticsDashboard from '../components/AnalyticsDashboard'

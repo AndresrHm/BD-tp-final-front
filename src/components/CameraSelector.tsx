@@ -1,4 +1,11 @@
-export default function CameraSelector({ cameras, selected, onSelect }) {
+export interface CameraSelectorProps {
+  cameras: string[];
+  selected: string;
+  onSelect: (camera: string) => void;
+}
+
+
+export default function CameraSelector({ cameras, selected, onSelect }: CameraSelectorProps) {
   return (
     <div className="flex bg-slate-100 p-1 rounded-xl inline-flex">
       {cameras.map((cam) => (
