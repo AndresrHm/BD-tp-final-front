@@ -1,25 +1,12 @@
 import { useState, useEffect } from 'react'
-import { getParkingStatus } from '../api/parkingApi'
 import ParkingSpotGrid from '../components/ParkingSpotGrid'
 import CameraSelector from '../components/CameraSelector'
-import type { ParkingSpot } from '../types'
 import AnalyticsDashboard from '../components/AnalyticsDashboard'
 
-const CAMERA_LIST = ['cam1', 'cam2', 'cam3']
+const CAMERA_LIST = ['1', '2', '3']
 
 export default function CamerasView() {
   const [camera, setCamera] = useState<string>(CAMERA_LIST[0])
-  const [spots, setSpots] = useState<ParkingSpot[]>([])
-
-  useEffect(() => {
-    let mounted = true
-    getParkingStatus(camera).then(data => {
-      if (mounted) setSpots(data)
-    })
-    return () => {
-      mounted = false
-    }
-  }, [camera])
 
   return (
     <div className="app-container">
@@ -34,7 +21,7 @@ export default function CamerasView() {
           <h1 style={styles.title}>Cámaras</h1>
           <p style={styles.subtitle}>Monitoreo en tiempo real de las plazas por cámara<strong>{}</strong></p>
         </div>
-        <ParkingSpotGrid spots={spots} onToggle={() => { }} />
+        <ParkingSpotGrid cameraName={camera}/>
       </div>
       <div className="card">
         <AnalyticsDashboard />

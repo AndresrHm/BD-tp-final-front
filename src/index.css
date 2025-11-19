@@ -1,43 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   /* --- TEMA CLARO (Por defecto ahora) --- */
-  --bg: #f1f5f9;       /* Gris suave (Slate-100) */
-  --panel: #ffffff;    /* Blanco puro */
-  --muted: #cbd5e1;    /* Gris para bordes */
-  --text: #0f172a;     /* Texto oscuro (Slate-900) */
-  --muted-text: #64748b; 
-  
-  --accent: #4f46e5;     /* Indigo */
-  --accent-600: #4338ca; 
-  
+  --bg: #f1f5f9;
+  /* Gris suave (Slate-100) */
+  --panel: #ffffff;
+  /* Blanco puro */
+  --muted: #cbd5e1;
+  /* Gris para bordes */
+  --text: #0f172a;
+  /* Texto oscuro (Slate-900) */
+  --muted-text: #64748b;
+
+  --accent: #4f46e5;
+  /* Indigo */
+  --accent-600: #4338ca;
+
   --success: #10b981;
   --danger: #ef4444;
-  
+
   /* Ajuste de gradientes para modo claro */
   --card: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
   --glass: rgba(255, 255, 255, 0.7);
-  
+
   --radius: 12px;
   --shadow-1: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-  
+
   font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
   font-size: 16px;
 }
 
-/* Soporte para Modo Oscuro (Si agregas la clase 'dark-mode' al body) */
-body.dark-mode {
-  --bg: #0f1724;
-  --panel: #0b1220;
-  --muted: #334155;
-  --text: #e6eef8;
-  --muted-text: #94a3b8;
-  --card: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-  --glass: rgba(13,42,56,0.5);
-  --shadow-1: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
-}
-
 /* --- RESTAURACIÓN DE ESTILOS DE ESTRUCTURA --- */
-
-html, body, #root {
+html,
+body,
+#root {
   height: 100%;
 }
 
@@ -183,9 +181,24 @@ body {
   grid-template-columns: repeat(4, 1fr);
   gap: 16px;
 }
-@media(max-width:1024px){ .parking-grid{grid-template-columns:repeat(3,1fr)} }
-@media(max-width:768px){ .parking-grid{grid-template-columns:repeat(2,1fr)} }
-@media(max-width:420px){ .parking-grid{grid-template-columns:repeat(1,1fr)} }
+
+@media(max-width:1024px) {
+  .parking-grid {
+    grid-template-columns: repeat(3, 1fr)
+  }
+}
+
+@media(max-width:768px) {
+  .parking-grid {
+    grid-template-columns: repeat(2, 1fr)
+  }
+}
+
+@media(max-width:420px) {
+  .parking-grid {
+    grid-template-columns: repeat(1, 1fr)
+  }
+}
 
 .spot {
   background: var(--panel);
@@ -212,13 +225,19 @@ body {
   border-left: 4px solid var(--success);
   background: rgba(82, 239, 68, 0.05);
 }
-.spot--free .status { color: var(--success); }
+
+.spot--free .status {
+  color: var(--success);
+}
 
 .spot--occupied {
   border-left: 4px solid var(--danger);
   background: rgba(239, 68, 68, 0.05);
 }
-.spot--occupied .status { color: var(--danger); }
+
+.spot--occupied .status {
+  color: var(--danger);
+}
 
 .spot .label {
   font-size: 1.1rem;
@@ -244,7 +263,10 @@ body {
 }
 
 /* Small utilities */
-.muted { color: var(--muted-text); }
+.muted {
+  color: var(--muted-text);
+}
+
 .btn {
   padding: 8px 16px;
   border-radius: 8px;
@@ -253,4 +275,26 @@ body {
   color: var(--text);
   font-weight: 600;
   cursor: pointer;
+}
+
+.app-container {
+  /* Antes tenías un valor fijo, ahora usamos un porcentaje alto o un valor muy grande */
+  @apply w-full max-w-[95vw] mx-auto px-4;
+}
+
+/* Opcional: Para las tarjetas */
+.card {
+  @apply bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden;
+}
+
+.p-4 {
+  padding: 0;
+}
+
+.mx-auto {
+  margin: 0, auto;
+}
+
+.cameraTitle {
+  padding: 2;
 }

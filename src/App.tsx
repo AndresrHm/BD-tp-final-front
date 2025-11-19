@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import CamerasView from './pages/CamerasView'
 import MetricsView from './pages/MetricsView'
-import AnalyticsDashboard from './components/AnalyticsDashboard'
 
 export default function App() {
   return (
