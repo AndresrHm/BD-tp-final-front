@@ -47,6 +47,7 @@ export async function toggleSpot(id: number): Promise<void> {
   throw new Error(`Plaza con id=${id} no encontrada en mocks`)
 }
 
+// Esto para "Métricas"
 export async function getMetrics(): Promise<MetricPoint[]> {
   await sleep(120)
   // Genera 12 puntos horarios (por ejemplo últimas 12 horas) con valores mock
@@ -59,4 +60,57 @@ export async function getMetrics(): Promise<MetricPoint[]> {
     points.push({ hora: hour, ocupacion })
   }
   return points
+}
+
+const API_URL = 'http://localhost:8000/analytics';
+
+// Helper para manejar errores de fetch
+async function fetchAPI<T>(endpoint: string): Promise<T> {
+  try {
+    const response = await fetch(`${API_URL}${endpoint}`);
+    if (!response.ok) {
+      throw new Error(`Error HTTP: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(`Error fetching ${endpoint}:`, error);
+    throw error;
+  }
+}
+
+// 1. Porcentaje de ocupación por imagen (cámara)
+export async function getOccupancyPct(imageName: string): Promise<number> {
+  // El backend retorna { "image": "...", "occupancy_pct": 0.5 }
+  const data = await fetchAPI<{ occupancy_pct: number }>(`/occupancy/${imageName}`);
+  return data.occupancy_pct;
+}
+
+// 2. Plazas más usadas (Top Spots)
+export async function getTopSpots(): Promise<any[]> {
+  const data = await fetchAPI<{ top_spots: any[] }>('/top_spots');
+  return data.top_spots;
+}
+
+// 3. Fila más usada
+export async function getTopRow(): Promise<string | number> {
+  const data = await fetchAPI<{ row: string | number }>('/top_row');
+  return data.row;
+}
+
+// 4. Uso excesivo actual (coches que llevan mucho tiempo)
+export async function getCurrentExcessive(): Promise<string | number> {
+  const data = await fetchAPI<{ spot: string | number }>('/current_excessive');
+  return data.spot;
+}
+
+// 5. Hora pico histórica
+export async function getPeakHour(): Promise<string> {
+  const data = await fetchAPI<{ hour: string }>('/peak_hour');
+  return data.hour;
+}
+
+// 6. Hora menos concurrida histórica
+export async function getLeastBusyHour(): Promise<string> {
+  const data = await fetchAPI<{ hour: string }>('/least_busy_hour');
+  return data.hour;
 }

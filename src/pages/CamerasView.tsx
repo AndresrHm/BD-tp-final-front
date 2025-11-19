@@ -3,6 +3,7 @@ import { getParkingStatus } from '../api/parkingApi'
 import ParkingSpotGrid from '../components/ParkingSpotGrid'
 import CameraSelector from '../components/CameraSelector'
 import type { ParkingSpot } from '../types'
+import AnalyticsDashboard from '../components/AnalyticsDashboard'
 
 const CAMERA_LIST = ['cam1', 'cam2', 'cam3']
 
@@ -24,17 +25,34 @@ export default function CamerasView() {
     <div className="app-container">
       <div className="page-header">
         <div>
-          <div className="page-title">Cámaras</div>
-          <div className="page-sub">Monitoreo en tiempo real de las plazas por cámara</div>
-        </div>
-        <div>
           <CameraSelector cameras={CAMERA_LIST} selected={camera} onSelect={setCamera} />
         </div>
       </div>
 
       <div className="card">
-        <ParkingSpotGrid spots={spots} onToggle={() => {}} />
+        <div>
+          <h1 style={styles.title}>Cámaras</h1>
+          <p style={styles.subtitle}>Monitoreo en tiempo real de las plazas por cámara<strong>{}</strong></p>
+        </div>
+        <ParkingSpotGrid spots={spots} onToggle={() => { }} />
+      </div>
+      <div className="card">
+        <AnalyticsDashboard />
       </div>
     </div>
   )
+}
+
+const styles = {
+  title: {
+    fontSize: '1.8rem',
+    fontWeight: '700',
+    margin: '0',
+    color: '#1a1a1a',
+  },
+  subtitle: {
+    margin: '0 0 0 0',
+    color: '#666',
+    fontSize: '0.9rem',
+  },
 }
