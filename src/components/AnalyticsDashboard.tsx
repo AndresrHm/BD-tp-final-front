@@ -44,7 +44,7 @@ export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
                 setMetrics({ occupancy: occ, topRow: row, peakHour: peak, leastBusyHour: low, excessive: exc });
             } catch (err) {
                 // Mocks en caso de error
-                setMetrics({ occupancy: 0.45, topRow: 2, peakHour: "18:00", leastBusyHour: "03:00", excessive: "A-12" });
+                setMetrics({ occupancy: 0.45, topRow: 2, peakHour: "18:00", leastBusyHour: "03:00", excessive: "F1-P1" });
             } finally {
                 setLoading(false);
             }
@@ -62,11 +62,11 @@ export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
                 <span className="text-xs bg-slate-100 text-slate-500 px-2 py-1 rounded">Últimos 30 días</span>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-4">
-                <StatCard title="Ocupación" value={`${(metrics.occupancy * 100).toFixed(0)}%`} icon={Icons.Percent} colorClass="text-blue-600" bgClass="bg-blue-50" loading={loading} />
-                <StatCard title="Hora Pico" value={metrics.peakHour} icon={Icons.TrendingUp} colorClass="text-rose-600" bgClass="bg-rose-50" loading={loading} />
-                <StatCard title="Hora Valle" value={metrics.leastBusyHour} icon={Icons.TrendingDown} colorClass="text-emerald-600" bgClass="bg-emerald-50" loading={loading} />
-                <StatCard title="Fila Top" value={metrics.topRow ? `Fila ${metrics.topRow}` : '-'} icon={Icons.MapPin} colorClass="text-violet-600" bgClass="bg-violet-50" loading={loading} />
-                <StatCard title="Uso Excesivo" value={metrics.excessive || 'Ninguno'} icon={Icons.AlertTriangle} colorClass="text-amber-600" bgClass="bg-amber-50" loading={loading} />
+                <StatCard title="Ocupación actual" value={`${(metrics.occupancy * 100).toFixed(0)}%`} icon={Icons.Percent} colorClass="text-blue-600" bgClass="bg-blue-50" loading={loading} />
+                <StatCard title="Hora más concurrente" value={metrics.peakHour} icon={Icons.TrendingUp} colorClass="text-rose-600" bgClass="bg-rose-50" loading={loading} />
+                <StatCard title="Hora menos concurrente" value={metrics.leastBusyHour} icon={Icons.TrendingDown} colorClass="text-emerald-600" bgClass="bg-emerald-50" loading={loading} />
+                <StatCard title="Fila más usada" value={metrics.topRow ? `Fila ${metrics.topRow}` : '-'} icon={Icons.MapPin} colorClass="text-violet-600" bgClass="bg-violet-50" loading={loading} />
+                <StatCard title="Plaza con uso excesivo" value={metrics.excessive || 'Ninguno'} icon={Icons.AlertTriangle} colorClass="text-amber-600" bgClass="bg-amber-50" loading={loading} />
                 <StatCard title="Estado" value="Online" icon={Icons.Activity} colorClass="text-cyan-600" bgClass="bg-cyan-50" loading={loading} />
             </div>
         </div>

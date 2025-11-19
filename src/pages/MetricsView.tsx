@@ -25,7 +25,7 @@ export default function MetricsView() {
       <div className="page-header">
         <div>
           <div className="page-title">Métricas</div>
-          <div className="page-sub">Tendencia de ocupación (datos mock)</div>
+          <div className="page-sub">Tendencia de ocupación</div>
         </div>
       </div>
 
