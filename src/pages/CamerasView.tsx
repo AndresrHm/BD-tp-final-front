@@ -19,12 +19,12 @@ export default function CamerasView() {
       <div className="card">
         <div>
           <h1 style={styles.title}>Cámaras</h1>
-          <p style={styles.subtitle}>Monitoreo en tiempo real de las plazas por cámara<strong>{}</strong></p>
+          <p style={styles.subtitle}>Monitoreo en tiempo real de las plazas por cámara <strong>{camera}</strong></p>
         </div>
-        <ParkingSpotGrid cameraName={camera}/>
+        <ParkingSpotGrid cameraName={camera} />
       </div>
       <div className="card">
-        <AnalyticsDashboard />
+        <AnalyticsDashboard currentCamera={camera} />
       </div>
     </div>
   )

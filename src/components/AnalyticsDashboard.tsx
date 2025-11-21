@@ -15,17 +15,17 @@ const fetchAPI = async (endpoint) => {
 };
 
 const apiService = {
-    getOccupancyPct: async (img) => (await fetchAPI(`/occupancy/${img}`)).occupancy_pct,
-    getTopSpots: async () => (await fetchAPI('/top_spots')).top_spots,
-    getTopRow: async () => (await fetchAPI('/top_row')).row,
-    getCurrentExcessive: async () => (await fetchAPI('/current_excessive')).spot,
-    getPeakHour: async () => (await fetchAPI('/peak_hour')).hour,
-    getLeastBusyHour: async () => (await fetchAPI('/least_busy_hour')).hour
+    getOccupancyPct: async (img: string) => (await fetchAPI(`/occupancy/${img}`)).occupancy_pct,
+    getTopSpots: async (camera: string) => (await fetchAPI(`/top_spots?camera=${camera}`)).top_spots,
+    getTopRow: async (camera: string) => (await fetchAPI(`/top_row?camera=${camera}`)).row,
+    getCurrentExcessive: async (camera: string) => (await fetchAPI(`/current_excessive?camera=${camera}`)).spot,
+    getPeakHour: async (camera: string) => (await fetchAPI(`/peak_hour?camera=${camera}`)).hour,
+    getLeastBusyHour: async (camera: string) => (await fetchAPI(`/least_busy_hour?camera=${camera}`)).hour
 };
 
 
-export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
-    const [metrics, setMetrics] = useState({
+export default function AnalyticsDashboard({ currentCamera = "cam1" }: { currentCamera?: string }) {
+    const [metrics, setMetrics] = useState<{ occupancy: number; topRow: number | null; peakHour: string | null; leastBusyHour: string | null; excessive: string | null }>({
         occupancy: 0, topRow: null, peakHour: null, leastBusyHour: null, excessive: null,
     });
     const [loading, setLoading] = useState(true);
@@ -36,15 +36,27 @@ export default function AnalyticsDashboard({ currentCamera = "cam1" }) {
             try {
                 const [occ, row, peak, low, exc] = await Promise.all([
                     apiService.getOccupancyPct(currentCamera),
-                    apiService.getTopRow(),
-                    apiService.getPeakHour(),
-                    apiService.getLeastBusyHour(),
-                    apiService.getCurrentExcessive()
+                    apiService.getTopRow(currentCamera),
+                    apiService.getPeakHour(currentCamera),
+                    apiService.getLeastBusyHour(currentCamera),
+                    apiService.getCurrentExcessive(currentCamera)
                 ]);
                 setMetrics({ occupancy: occ, topRow: row, peakHour: peak, leastBusyHour: low, excessive: exc });
             } catch (err) {
-                // Mocks en caso de error
-                setMetrics({ occupancy: 0.45, topRow: 2, peakHour: "18:00", leastBusyHour: "03:00", excessive: "F1-P1" });
+                // Mocks en caso de error: variar según la cámara para mostrar diferencia
+                const mockByCamera = (cam?: string) => {
+                    switch ((cam || '').toString()) {
+                        case '1':
+                            return { occupancy: 0.35, topRow: 1, peakHour: '18:00', leastBusyHour: '03:00', excessive: 'A1-03' };
+                        case '2':
+                            return { occupancy: 0.72, topRow: 3, peakHour: '12:00', leastBusyHour: '04:00', excessive: 'B2-10' };
+                        case '3':
+                            return { occupancy: 0.18, topRow: 2, peakHour: '20:00', leastBusyHour: '02:00', excessive: null };
+                        default:
+                            return { occupancy: 0.45, topRow: 2, peakHour: '18:00', leastBusyHour: '03:00', excessive: 'F1-P1' };
+                    }
+                };
+                setMetrics(mockByCamera(currentCamera));
             } finally {
                 setLoading(false);
             }
@@ -84,7 +96,7 @@ const Icons = {
     Activity: () => <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
 };
 
-const StatCard = ({ title, value, icon: Icon, colorClass, bgClass, loading }) => (
+const StatCard = ({ title, value, icon: Icon, colorClass, bgClass, loading }: { title: string; value: any; icon: React.ComponentType<any>; colorClass?: string; bgClass?: string; loading?: boolean }) => (
     <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm flex items-center gap-4 hover:shadow-md transition-all">
         <div className={`w-14 h-14 rounded-xl flex items-center justify-center flex-shrink-0 ${bgClass} ${colorClass}`}>
             <Icon />
